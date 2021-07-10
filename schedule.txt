@@ -1,0 +1,18 @@
+As partes do projeto são:
+	- Servidor
+	- Código do Arduino
+	- Código da conexão por WiFi
+	- Código React
+
+Parte 1:
+	Coletar dados sobre o solo e controlar a bomba d'água.
+
+Parte 2:
+	Mandar os dados (processador) para o servidor por WiFi.
+
+Parte 3:
+	Armazenar os dados no servidor.
+
+Parte 4:
+	Página Web para monitoramento.
+
