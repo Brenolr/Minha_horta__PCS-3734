@@ -34,7 +34,12 @@ def status(req, measure_name):
 
 def get_status(req, measure_name):
 	
-	Measure.objects.filter(last_update__gt='2021-08-01') # Aug 1st
+	ms = Measure.objects.filter(last_update__gt='2021-08-01') # Aug 1st
+	l = []
+	for m in ms:
+		content = m#.headline
+		#print(type(content), dir(content))
+		l.append(m.value)
 
 	# methods = {
 	# 	'temp': ,
@@ -43,7 +48,7 @@ def get_status(req, measure_name):
 	# 	'luz': ,
 	# }
 
-	return HttpResponse("Success")
+	return HttpResponse("Success : %s" % l)
 
 def set_status(req, measure_name):
 

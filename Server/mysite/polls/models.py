@@ -17,4 +17,4 @@ class Measure(models.Model):
 	last_update = models.DateTimeField('last update')
 
 	def __str__(self):
-		return f'[%s] %s = %d' % (last_update, origin, value)
+		return f'[%s] %s = %d' % (self.last_update, self.origin, self.value)
