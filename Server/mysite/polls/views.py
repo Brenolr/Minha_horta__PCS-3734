@@ -24,38 +24,51 @@ def index(request):
 
 valid_names = {'temp', 'umid_ar', 'umid_solo', 'luz'} # set, por questoes de desempenho
 
-def status(req, measure_name):
-	if measure_name not in valid_names:
-		return HttpResponse("Parametro invalido requerido")
+class Controller():
+	def __init__(self, req, name, model):
+		self.req = req
+		self.name = name
+		self.model = model
 
-	if req.method == 'GET':	
-		return get_status(req, measure_name)
-	elif req.method == 'POST':	
-		return set_status(req, measure_name)
-	else:	
-		return HttpResponse("Esta URL só aceita POST e GET requests")
+	def getter(self):
 
-def get_status(req, measure_name):
+		kwargs = {
+			'last_update__gt': '2021-08-01',
+			'origin__iexact': self.name,
+		}	
 
-	kwargs = {
-		'last_update__gt': '2021-08-01',
-		'origin__iexact': measure_name,
-	}	
+		ms = self.model.objects.filter(**kwargs) # Aug 1st
+		l = [m.value for m in ms]
+		return HttpResponse("Success : %s" % l)
 
-	ms = Measure.objects.filter(**kwargs) # Aug 1st
-	l = []
-	for m in ms:
-		l.append(m.value)
+	def setter(self):
 
-	return HttpResponse("Success : %s" % l)
+		value = self.self.req.POST['value']
+		origin = self.name
+		today = datetime.datetime.now()
 
-def set_status(req, measure_name):
+		m = self.model(value=value, origin=origin, last_update=today)
+		m.save()
 
-	value = req.POST['value']
-	origin = measure_name
-	today = datetime.datetime.now()
+		return HttpResponse(value)
 
-	m = Measure(value=value, origin=origin, last_update=today)
-	m.save()
+	def handle(self):
+		if self.name not in valid_names:
+			return HttpResponse("Parametro invalido requerido")
 
-	return HttpResponse(value)
+		if self.req.method == 'GET':	
+			return self.getter()
+		elif self.req.mecookie_valuethod == 'POST':	
+			return self.setter()
+		else:	
+			return HttpResponse("Esta URL só aceita POST e GET requests")
+
+	
+
+def measure(req, measure_name):
+	c = Controller(req, measure_name, Measure)
+	return c.handle()
+
+def threshold(req, measure_name):
+	c = Controller(req, measure_name, Threshold)
+	return c.handle()
