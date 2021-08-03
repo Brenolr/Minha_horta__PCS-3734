@@ -1,10 +1,10 @@
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 from .models import *
 
-from django.shortcuts import get_object_or_404
-
 import datetime
+import json
 
 def index(request):
 	if request.method == 'GET':
@@ -22,43 +22,59 @@ def index(request):
 
 	return HttpResponse("Hello, world. You're at the polls index.")
 
-valid_names = {'temp', 'umid_ar', 'umid_solo', 'luz'} # set, por questoes de desempenho
+GERAL = 'geral'
+
+# set, por questoes de desempenho
+valid_names = {'temp', 'umid_ar', 'umid_solo', 'luz'} 
 
 class Controller():
 	def __init__(self, req, name, model):
 		self.req = req
-		self.name = name
 		self.model = model
 
+		if name == GERAL: # pega todos os valores de uma vez
+			self.names = valid_names
+		else:
+			self.names = { name }
+
 	def getter(self):
+		l = []
+		for name in self.names:
+			kwargs = {
+				'last_update__gt': '2021-08-01',
+				'origin__iexact': name,
+			}	
 
-		kwargs = {
-			'last_update__gt': '2021-08-01',
-			'origin__iexact': self.name,
-		}	
+			ms = self.model.objects.filter(**kwargs) # Aug 1st
+			l.append([m.value for m in ms])
 
-		ms = self.model.objects.filter(**kwargs) # Aug 1st
-		l = [m.value for m in ms]
 		return HttpResponse("Success : %s" % l)
 
 	def setter(self):
+		body = self.req.body
+		body = body.decode('utf-8')
+		values = json.loads(body)['values']
 
-		value = self.self.req.POST['value']
-		origin = self.name
 		today = datetime.datetime.now()
 
-		m = self.model(value=value, origin=origin, last_update=today)
-		m.save()
+		l = []
+		for key in values: # dicionario
+			origin = key
+			value = values[key]
 
-		return HttpResponse(value)
+			m = self.model(value=value, origin=origin, last_update=today)
+			m.save()
+			l.append(m.value)
+
+		return HttpResponse(str(l))
 
 	def handle(self):
-		if self.name not in valid_names:
-			return HttpResponse("Parametro invalido requerido")
+		if not set(self.names).issubset( valid_names.union({GERAL}) ):
+			return HttpResponse("Parametro invalido requerido: %s" % self.names)
 
 		if self.req.method == 'GET':	
 			return self.getter()
-		elif self.req.mecookie_valuethod == 'POST':	
+		elif self.req.method == 'POST':	
 			return self.setter()
 		else:	
 			return HttpResponse("Esta URL só aceita POST e GET requests")
