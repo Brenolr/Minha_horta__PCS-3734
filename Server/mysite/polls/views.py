@@ -22,10 +22,10 @@ def index(request):
 
 	return HttpResponse("Hello, world. You're at the polls index.")
 
-valid_status = {'temp', 'umid_ar', 'umid_solo', 'luz'} # set, por questoes de desempenho
+valid_names = {'temp', 'umid_ar', 'umid_solo', 'luz'} # set, por questoes de desempenho
 
 def status(req, measure_name):
-	if measure_name not in valid_status:
+	if measure_name not in valid_names:
 		return HttpResponse("Parametro invalido requerido")
 
 	if req.method == 'GET':	
@@ -45,16 +45,7 @@ def get_status(req, measure_name):
 	ms = Measure.objects.filter(**kwargs) # Aug 1st
 	l = []
 	for m in ms:
-		content = m#.headline
-		#print(type(content), dir(content))
 		l.append(m.value)
-
-	# methods = {
-	# 	'temp': ,
-	# 	'umid_ar': ,
-	# 	'umid_solo': ,
-	# 	'luz': ,
-	# }
 
 	return HttpResponse("Success : %s" % l)
 
@@ -66,12 +57,5 @@ def set_status(req, measure_name):
 
 	m = Measure(value=value, origin=origin, last_update=today)
 	m.save()
-
-	# methods = {
-	# 	'temp': ,
-	# 	'umid_ar': ,
-	# 	'umid_solo': ,
-	# 	'luz': ,
-	# }
 
 	return HttpResponse(value)
