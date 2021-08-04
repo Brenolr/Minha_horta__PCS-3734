@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.template import loader
 
 from .models import *
 
@@ -46,9 +47,14 @@ class Controller():
 			}	
 
 			ms = self.model.objects.filter(**kwargs) # Aug 1st
-			l.append([m.value for m in ms])
+			l.append([str(m) for m in ms])
 
-		return HttpResponse("Success : %s" % l)
+		template = loader.get_template('polls/index.html')
+		context = {
+			'query_list': l,
+		}
+
+		return HttpResponse(template.render(context, self.req))
 
 	def setter(self):
 		body = self.req.body

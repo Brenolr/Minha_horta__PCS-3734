@@ -1,5 +1,5 @@
 from django.db import models
-
+#import time
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -17,7 +17,8 @@ class Measure(models.Model):
 	last_update = models.DateTimeField('last update')
 
 	def __str__(self):
-		return f'[%s] %s = %d' % (self.last_update, self.origin, self.value)
+		last_update = self.last_update.strftime('%X')
+		return f'[%s] %s = %d' % (last_update, self.origin, self.value)
 
 class Threshold(Measure):
 	pass
