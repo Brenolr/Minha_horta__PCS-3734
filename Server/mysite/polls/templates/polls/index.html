@@ -1,0 +1,10 @@
+{% if query_list %}
+    <ul>
+    {% for element in query_list %}
+		<b>{{element}}</b>
+		</br>
+	{% endfor %}
+    </ul>
+{% else %}
+    <p>No polls are available.</p>
+{% endif %}
