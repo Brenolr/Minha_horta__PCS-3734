@@ -62,11 +62,13 @@ class Controller():
 	def setter(self):
 		body = self.req.body
 		body = body.decode('utf-8')
-		values = json.loads(body)['values']
+		values = json.loads(body)
+		values = json.loads(values)
 
 		today = datetime.datetime.now()
 
 		l = []
+		
 		for key in values: # dicionario
 			origin = key
 			value = values[key]
