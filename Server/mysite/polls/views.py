@@ -1,4 +1,4 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.template import loader
 
@@ -39,7 +39,7 @@ class Controller():
 			self.names = { name }
 
 	def getter(self):
-		l = []
+		d = {}
 		for name in self.names:
 			kwargs = {
 				'last_update__gt': '2021-08-01',
@@ -47,14 +47,17 @@ class Controller():
 			}	
 
 			ms = self.model.objects.filter(**kwargs) # Aug 1st
-			l.append([str(m) for m in ms])
+			d[name] = [m.value for m in ms]
 
 		template = loader.get_template('polls/index.html')
 		context = {
-			'query_list': l,
+		 	'query_data': d,
 		}
+		print(context)
+		response = JsonResponse(d)
+		print(response.content)
 
-		return HttpResponse(template.render(context, self.req))
+		return response#HttpResponse(template.render(context, self.req))
 
 	def setter(self):
 		body = self.req.body
