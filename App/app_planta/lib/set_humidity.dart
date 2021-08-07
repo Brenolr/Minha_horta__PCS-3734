@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class SetHumidity extends StatefulWidget {
-  SetHumidity({Key key, this.title}) : super(key: key);
-
-  final String title;
 
   @override
   _SetHumidityState createState() => _SetHumidityState();

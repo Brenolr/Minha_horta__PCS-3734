@@ -10,7 +10,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -25,7 +24,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MainTabBar extends StatelessWidget {
-  const MainTabBar({key, this.title}) : super(key: key);
+  const MainTabBar({key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -53,11 +52,9 @@ class MainTabBar extends StatelessWidget {
         ),
         body: TabBarView(
           children: <Widget>[
-            
-            SetAlarms(key: Key("alarmes"), title: "alarmes",),
-            SetHumidity(key: Key("humidade"), title: "humidade  ",),
-            
-            Graphs(getHumidity())
+            SetAlarms(),
+            SetHumidity(),
+            Graphs()
           ],
         ),
       ),
