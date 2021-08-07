@@ -1,30 +1,54 @@
 /// Sample ordinal data type.
 class OrdinalSales {
-  final String year;
+  final int year;
   final int sales;
 
   OrdinalSales(this.year, this.sales);
 }
 
 class Data {
-  final List<double> temp;
-  final List<double> light;
-  final List<double> hum_air;
-  final List<int> hum_soil;
+  final List<dynamic> temp;
+  final List<dynamic> luz;
+  final List<dynamic> umid_ar;
+  final List<dynamic> umid_solo;
 
-  Data({
-    this.temp,
-    this.light,
-    this.hum_air,
-    this.hum_soil
-  });
+  Data(
+      {required this.temp,
+      required this.luz,
+      required this.umid_ar,
+      required this.umid_solo});
 
   factory Data.fromJson(Map<String, dynamic> json) {
     return Data(
+      umid_ar: json['umid_ar'],
+      luz: json['luz'],
       temp: json['temp'],
-      light: json['light'],
-      hum_air: json['hum_air'],
-      hum_soil: json['hum_soil'],
+      umid_solo: json['umid_solo'],
+    );
+  }
+  String getTemp() {
+    return (temp.toString());
+  }
+}
+
+class Data_treash {
+  final List<double> temp_treash;
+  final List<double> luz_treash;
+  final List<double> umid_ar_treash;
+  final List<int> umid_solo_treash;
+
+  Data_treash(
+      {required this.temp_treash,
+      required this.luz_treash,
+      required this.umid_ar_treash,
+      required this.umid_solo_treash});
+
+  factory Data_treash.fromJson(Map<String, dynamic> json) {  
+    return Data_treash(
+      umid_ar_treash: json['umid_ar'],
+      luz_treash: json['luz'],
+      temp_treash: json['temp'],
+      umid_solo_treash: json['umid'],
     );
   }
 }
