@@ -1,5 +1,4 @@
 from django.db import models
-#import time
 
 class Question(models.Model):
     question_text = models.CharField(max_length=200)
@@ -12,14 +11,21 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
 
 class Measure(models.Model):
-	value = models.IntegerField(default=25)
 	origin = models.CharField(max_length=20, default="")
-	last_update = models.DateTimeField('last update')
+	last_update = models.DateTimeField('last update', default='2010')
+	value = models.FloatField(default=25)
 
 	def __str__(self):
 		last_update = self.last_update.strftime('%X')
 		return f'[%s] %s = %d' % (last_update, self.origin, self.value)
 
-class Threshold(Measure):
-	pass
-	
+class Threshold(models.Model):
+	origin = models.CharField(max_length=20, default="")
+	last_update = models.DateTimeField('last update', default='2010')
+	min_value = models.FloatField(default=25)
+	max_value = models.FloatField(default=25)
+
+	def __str__(self):
+		last_update = self.last_update.strftime('%X')
+		return f'[%s] %s = (%d, %d)' % \
+			(last_update, self.origin, self.min_value, self.max_value)
