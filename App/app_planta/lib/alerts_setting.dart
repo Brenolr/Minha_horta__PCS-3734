@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'models.dart';
 import 'server_interface.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class SetAlarms extends StatefulWidget {
   @override
@@ -25,35 +26,68 @@ class _SetAlarmsState extends State<SetAlarms> {
   Widget build(BuildContext context) {
     return Center(
       child: FutureBuilder(
-          future: api.getValues(),
+          future: data,
           builder: (BuildContext context, AsyncSnapshot<Data> snapshot) {
             if (snapshot.hasData) {
               return Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Card(
-                    child: ListTile(
-                      title: RangeSlider(
-                        min: 0,
-                        max: 50,
-                        divisions: 100,
-                        values: _temperaturas,
-                        onChanged: (RangeValues values) {
-                          _temperaturas = values;
-                        },
-                      ),
-                      subtitle: Text(
-                        'Temperatura:',
-                      ),
-                      leading: Icon(Icons.wb_sunny),
-                      trailing: Text(
-                        _temperaturas.start.toStringAsPrecision(3) +
-                            "ºC - " +
-                            _temperaturas.end.toStringAsPrecision(3) +
-                            " ºC",
-                      ),
-                    ),
-                  ),
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: BoxedIcon(WeatherIcons.thermometer,color: Colors.grey,),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "Temperatura: ",
+                                        style: TextStyle(fontSize: 30, color: Colors.grey),
+                                      )),
+                                  Align(
+                                    alignment: Alignment.topRight,
+                                    child: Text(
+                                        snapshot.data!
+                                                .getTempRecent()
+                                                .toStringAsPrecision(3) +
+                                            "Cº",
+                                        style: TextStyle(fontSize: 30, )),
+                                  )
+                                ],
+                              ),
+                            ),
+                            RangeSlider(
+                              min: 0,
+                              max: 50,
+                              divisions: 100,
+                              values: _temperaturas,
+                              onChanged: (RangeValues values) {
+                                setState(() {
+                                  _temperaturas = values;
+                                });
+                              },
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                _temperaturas.start.toStringAsPrecision(3) +
+                                    "Cº - " +
+                                    _temperaturas.end.toStringAsPrecision(3) +
+                                    " Cº",
+                                    style: TextStyle(color: Colors.grey)
+                              ),
+                            )
+                          ],
+                        ),
+                      )),
                   Card(
                     child: ListTile(
                       title: RangeSlider(

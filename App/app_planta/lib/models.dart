@@ -26,8 +26,12 @@ class Data {
       umid_solo: json['umid_solo'],
     );
   }
-  String getTemp() {
-    return (temp.toString());
+  List<dynamic> getTempAll() {
+    return (temp);
+  }
+
+  double getTempRecent() {
+    return (temp[0].toDouble());
   }
 }
 
@@ -43,7 +47,7 @@ class Data_treash {
       required this.umid_ar_treash,
       required this.umid_solo_treash});
 
-  factory Data_treash.fromJson(Map<String, dynamic> json) {  
+  factory Data_treash.fromJson(Map<String, dynamic> json) {
     return Data_treash(
       umid_ar_treash: json['umid_ar'],
       luz_treash: json['luz'],

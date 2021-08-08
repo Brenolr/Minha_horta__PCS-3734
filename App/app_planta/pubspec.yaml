@@ -32,6 +32,9 @@ dependencies:
   #Dependency for graphs 
   charts_flutter: ^0.11.0
   http: ^0.13.3
+  weather_icons: ^3.0.0
+  
+  
 
 dev_dependencies:
   flutter_test:
