@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:weather_icons/weather_icons.dart';
 
 class SetHumidity extends StatefulWidget {
-
   @override
   _SetHumidityState createState() => _SetHumidityState();
 }
@@ -11,10 +11,11 @@ class _SetHumidityState extends State<SetHumidity> {
   RangeValues _humidity_soil = RangeValues(20, 70);
 
   @override
-    void initState() {
-      super.initState();
-      _showMyDialog();
-    }
+  void initState() {
+    super.initState();
+    _showMyDialog();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -22,29 +23,68 @@ class _SetHumidityState extends State<SetHumidity> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Card(
-            child: ListTile(
-              title: RangeSlider(
-                  values: _humidity_soil,
-                  min: 0,
-                  max: 100,
-                  divisions: 100,
-                  onChanged: (RangeValues values) {
-                    setState(() {
-                      _humidity_soil = values;
-                    });
-                  }),
-              subtitle: Text(
-                'Umidade:',
-              ),
-              leading: Icon(Icons.invert_colors),
-              trailing: Text(
-                _humidity_soil.start.toString() +
-                    "% - " +
-                    _humidity_soil.end.toString() +
-                    " %",
-              ),
-            ),
-          ),
+              margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+              child: Container(
+                margin: EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Container(
+                      height: 50,
+                      child: Row(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: BoxedIcon(
+                              WeatherIcons.raindrop,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Umidade: ',
+                                style:
+                                    TextStyle(fontSize: 30, color: Colors.grey),
+                              )),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Text(
+                                "123"
+                                // snapshot.data!
+                                //         .getUmidArRecent()
+                                //         .toStringAsPrecision(3) +
+                                //     "%",
+                                ,
+                                style: TextStyle(
+                                  fontSize: 35,
+                                )),
+                          )
+                        ],
+                      ),
+                    ),
+                    RangeSlider(
+                      min: 0,
+                      max: 100,
+                      divisions: 100,
+                      values: _humidity_soil,
+                      onChanged: (RangeValues values) {
+                        setState(() {
+                          _humidity_soil = values;
+                        });
+                      },
+                    ),
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(
+                          _humidity_soil.start.toStringAsPrecision(3) +
+                              "% - " +
+                              _humidity_soil.end.toStringAsPrecision(3) +
+                              " %",
+                          style: TextStyle(color: Colors.grey)),
+                    )
+                  ],
+                ),
+              )),
         ],
       ),
     );

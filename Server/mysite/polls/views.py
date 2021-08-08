@@ -142,6 +142,7 @@ class ThresholdControl(Controller):
 				origin=origin, 
 				last_update=today
 			)
+			print(str(m))
 			m.save()
 			l.append((m.min_value, m.max_value))
 

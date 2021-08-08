@@ -11,6 +11,7 @@ class SetAlarms extends StatefulWidget {
 
 class _SetAlarmsState extends State<SetAlarms> {
   late Future<Data> data;
+  late Future<DataThreshold> datatreshold;
   RangeValues _light_range = RangeValues(20, 40);
   RangeValues _humidity_air = RangeValues(20, 70);
   RangeValues _temperaturas = RangeValues(15, 30);
@@ -20,6 +21,7 @@ class _SetAlarmsState extends State<SetAlarms> {
   void initState() {
     super.initState();
     data = api.getValues();
+    datatreshold = api.getLimits();
   }
 
   @override
@@ -44,22 +46,28 @@ class _SetAlarmsState extends State<SetAlarms> {
                                 children: [
                                   Align(
                                     alignment: Alignment.topLeft,
-                                    child: BoxedIcon(WeatherIcons.thermometer,color: Colors.grey,),
+                                    child: BoxedIcon(
+                                      WeatherIcons.thermometer,
+                                      color: Colors.grey,
+                                    ),
                                   ),
                                   Align(
-                                      alignment: Alignment.topLeft,
+                                      alignment: Alignment.centerLeft,
                                       child: Text(
                                         "Temperatura: ",
-                                        style: TextStyle(fontSize: 30, color: Colors.grey),
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.grey),
                                       )),
                                   Align(
-                                    alignment: Alignment.topRight,
+                                    alignment: Alignment.centerRight,
                                     child: Text(
                                         snapshot.data!
                                                 .getTempRecent()
                                                 .toStringAsPrecision(3) +
                                             "Cº",
-                                        style: TextStyle(fontSize: 30, )),
+                                        style: TextStyle(
+                                          fontSize: 35,
+                                        )),
                                   )
                                 ],
                               ),
@@ -78,65 +86,137 @@ class _SetAlarmsState extends State<SetAlarms> {
                             Align(
                               alignment: Alignment.bottomLeft,
                               child: Text(
-                                _temperaturas.start.toStringAsPrecision(3) +
-                                    "Cº - " +
-                                    _temperaturas.end.toStringAsPrecision(3) +
-                                    " Cº",
-                                    style: TextStyle(color: Colors.grey)
-                              ),
+                                  _temperaturas.start.toStringAsPrecision(3) +
+                                      "Cº - " +
+                                      _temperaturas.end.toStringAsPrecision(3) +
+                                      " Cº",
+                                  style: TextStyle(color: Colors.grey)),
                             )
                           ],
                         ),
                       )),
                   Card(
-                    child: ListTile(
-                      title: RangeSlider(
-                          values: _humidity_air,
-                          min: 0,
-                          max: 100,
-                          divisions: 100,
-                          onChanged: (RangeValues values) {
-                            setState(() {
-                              _humidity_air = values;
-                            });
-                          }),
-                      subtitle: Text(
-                        'Umidade:',
-                      ),
-                      leading: Icon(Icons.invert_colors),
-                      trailing: Text(
-                        _humidity_air.start.toString() +
-                            "% - " +
-                            _humidity_air.end.toString() +
-                            " %",
-                      ),
-                    ),
-                  ),
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: BoxedIcon(
+                                      WeatherIcons.raindrop,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Umidade: ',
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.grey),
+                                      )),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                        snapshot.data!
+                                                .getUmidArRecent()
+                                                .toStringAsPrecision(3) +
+                                            "%",
+                                        style: TextStyle(
+                                          fontSize: 35,
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ),
+                            RangeSlider(
+                              min: 0,
+                              max: 100,
+                              divisions: 100,
+                              values: _humidity_air,
+                              onChanged: (RangeValues values) {
+                                setState(() {
+                                  _humidity_air = values;
+                                });
+                              },
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                  _humidity_air.start.toStringAsPrecision(3) +
+                                      "% - " +
+                                      _humidity_air.end.toStringAsPrecision(3) +
+                                      " %",
+                                  style: TextStyle(color: Colors.grey)),
+                            )
+                          ],
+                        ),
+                      )),
                   Card(
-                    child: ListTile(
-                      title: RangeSlider(
-                        min: 0,
-                        max: 60,
-                        divisions: 60,
-                        onChanged: (RangeValues values) {
-                          setState(() {
-                            _light_range = values;
-                          });
-                        },
-                        values: _light_range,
-                      ),
-                      subtitle: Text(
-                        'Lumisidade:',
-                      ),
-                      leading: Icon(Icons.wb_sunny),
-                      trailing: Text(
-                        _light_range.start.toStringAsPrecision(3) +
-                            "L - " +
-                            _light_range.end.toStringAsPrecision(3) +
-                            " L",
-                      ),
-                    ),
-                  ),
+                      margin: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Container(
+                        margin: EdgeInsets.all(10),
+                        child: Column(
+                          children: [
+                            Container(
+                              height: 50,
+                              child: Row(
+                                children: [
+                                  Align(
+                                    alignment: Alignment.topLeft,
+                                    child: BoxedIcon(
+                                      WeatherIcons.day_sunny,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Text(
+                                        'Lumisidade: ',
+                                        style: TextStyle(
+                                            fontSize: 30, color: Colors.grey),
+                                      )),
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: Text(
+                                        snapshot.data!
+                                                .getLuzRecent()
+                                                .toStringAsPrecision(3) +
+                                            "L",
+                                        style: TextStyle(
+                                          fontSize: 35,
+                                        )),
+                                  )
+                                ],
+                              ),
+                            ),
+                            RangeSlider(
+                              min: 0,
+                              max: 100,
+                              divisions: 100,
+                              values: _light_range,
+                              onChanged: (RangeValues values) {
+                                setState(() {
+                                  _light_range = values;
+                                });
+                              },
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                  _light_range.start.toStringAsPrecision(3) +
+                                      "L - " +
+                                      _light_range.end.toStringAsPrecision(3) +
+                                      " L",
+                                  style: TextStyle(color: Colors.grey)),
+                            )
+                          ],
+                        ),
+                      )),
                 ],
               );
             } else {

@@ -33,22 +33,46 @@ class Data {
   double getTempRecent() {
     return (temp[0].toDouble());
   }
+
+  List<dynamic> getLuzAll() {
+    return (luz);
+  }
+
+  double getLuzRecent() {
+    return (luz[0].toDouble());
+  }
+
+  List<dynamic> getUmidArAll() {
+    return (umid_ar);
+  }
+
+  double getUmidArRecent() {
+    return (umid_ar[0].toDouble());
+  }
+
+  List<dynamic> getUmidSoloAll() {
+    return (umid_solo);
+  }
+
+  double getUmidSoloRecent() {
+    return (umid_solo[0].toDouble());
+  }
 }
 
-class Data_treash {
-  final List<double> temp_treash;
-  final List<double> luz_treash;
-  final List<double> umid_ar_treash;
-  final List<int> umid_solo_treash;
+class DataThreshold {
+  final List<dynamic> temp_treash;
+  final List<dynamic> luz_treash;
+  final List<dynamic> umid_ar_treash;
+  final List<dynamic> umid_solo_treash;
 
-  Data_treash(
+  DataThreshold(
       {required this.temp_treash,
       required this.luz_treash,
       required this.umid_ar_treash,
       required this.umid_solo_treash});
 
-  factory Data_treash.fromJson(Map<String, dynamic> json) {
-    return Data_treash(
+  factory DataThreshold.fromJson(Map<String, dynamic> json) {
+    return DataThreshold(
       umid_ar_treash: json['umid_ar'],
       luz_treash: json['luz'],
       temp_treash: json['temp'],
@@ -56,3 +80,5 @@ class Data_treash {
     );
   }
 }
+
+
