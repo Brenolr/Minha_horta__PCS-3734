@@ -1,7 +1,8 @@
+import 'package:app_planta/server_provider.dart';
+import 'package:app_planta/set_humidity.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'Interface.dart';
-import 'Set_humidity.dart';
+import 'package:provider/provider.dart';
 import 'alerts_setting.dart';
 import 'graph.dart';
 
@@ -13,13 +14,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Minha Horta',
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-      ),
-      home: MainTabBar(title: 'Minha Horta'),
-    );
+    return MultiProvider(
+        providers: [
+          ChangeNotifierProvider<DataProvider>(create: (context) => DataProvider()),
+          ChangeNotifierProvider<DataThresholdProvider>(create: (context) => DataThresholdProvider())
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Minha Horta',
+          theme: ThemeData(
+            primarySwatch: Colors.green,
+          ),
+          home: MainTabBar(title: 'Minha Horta'),
+        ));
   }
 }
 
@@ -51,11 +58,7 @@ class MainTabBar extends StatelessWidget {
           ),
         ),
         body: TabBarView(
-          children: <Widget>[
-            SetAlarms(),
-            SetHumidity(),
-            Graphs()
-          ],
+          children: <Widget>[SetAlarms(), SetHumidity(), Graphs()],
         ),
       ),
     );

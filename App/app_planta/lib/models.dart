@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 /// Sample ordinal data type.
 class OrdinalSales {
   final int year;
@@ -31,7 +33,7 @@ class Data {
   }
 
   double getTempRecent() {
-    return (temp[0].toDouble());
+    return (temp[temp.length - 1].toDouble());
   }
 
   List<dynamic> getLuzAll() {
@@ -39,7 +41,7 @@ class Data {
   }
 
   double getLuzRecent() {
-    return (luz[0].toDouble());
+    return (luz[luz.length - 1].toDouble());
   }
 
   List<dynamic> getUmidArAll() {
@@ -47,7 +49,7 @@ class Data {
   }
 
   double getUmidArRecent() {
-    return (umid_ar[0].toDouble());
+    return (umid_ar[umid_ar.length - 1].toDouble());
   }
 
   List<dynamic> getUmidSoloAll() {
@@ -55,7 +57,7 @@ class Data {
   }
 
   double getUmidSoloRecent() {
-    return (umid_solo[0].toDouble());
+    return (umid_solo[umid_solo.length - 1].toDouble());
   }
 }
 
@@ -76,9 +78,43 @@ class DataThreshold {
       umid_ar_treash: json['umid_ar'],
       luz_treash: json['luz'],
       temp_treash: json['temp'],
-      umid_solo_treash: json['umid'],
+      umid_solo_treash: json['umid_solo'],
     );
   }
+  RangeValues getTempRange() {
+    return (RangeValues(temp_treash[temp_treash.length - 1]['min_value'],
+        temp_treash[temp_treash.length - 1]['max_value']));
+  }
+
+  void setTempRange(RangeValues range) {
+    temp_treash[temp_treash.length - 1]['min_value'] = range.start;
+    temp_treash[temp_treash.length - 1]['max_value'] = range.end;
+  }
+  RangeValues getUmidSoloRange() {
+    return (RangeValues(umid_solo_treash[umid_solo_treash.length - 1]['min_value'],
+        umid_solo_treash[umid_solo_treash.length - 1]['max_value']));
+  }
+
+  void setUmidSoloRange(RangeValues range) {
+    umid_solo_treash[umid_solo_treash.length - 1]['min_value'] = range.start;
+    umid_solo_treash[umid_solo_treash.length - 1]['max_value'] = range.end;
+  }
+  RangeValues getUmidArRange() {
+    return (RangeValues(umid_ar_treash[umid_ar_treash.length - 1]['min_value'],
+        umid_ar_treash[umid_ar_treash.length - 1]['max_value']));
+  }
+
+  void setUmidArRange(RangeValues range) {
+    umid_ar_treash[umid_ar_treash.length - 1]['min_value'] = range.start;
+    umid_ar_treash[umid_ar_treash.length - 1]['max_value'] = range.end;
+  }
+  RangeValues getLuzRange() {
+    return (RangeValues(luz_treash[luz_treash.length - 1]['min_value'],
+        luz_treash[luz_treash.length - 1]['max_value']));
+  }
+
+  void setLuzRange(RangeValues range) {
+    luz_treash[luz_treash.length - 1]['min_value'] = range.start;
+    luz_treash[luz_treash.length - 1]['max_value'] = range.end;
+  }
 }
-
-
